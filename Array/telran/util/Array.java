@@ -236,4 +236,29 @@ public class Array {
 		}
 		return res;
 	}
+/**
+ * 	all odd numbers go before the even ones 
+ *  and odd numbers be sorted in the ascending order
+ *  and even numbers be sorted in the descending order
+ * @param predicate - check for odd value
+ * @author Vinny
+ */
+	public void sortingEvenOdd(Predicate<Object> predicate) {
+		Object res[] = new Object[size];
+		this.sort();
+		int i = 0;
+		int Min = 0;
+		int Max = size - 1;
+		while (i < size) {
+			if (predicate.test(this.array[i])) {
+				res[Max] = this.array[i];
+				Max--;
+			} else {
+				res[Min] = this.array[i];
+				Min++;
+			}
+			i++;
+		}
+		this.array = res;
+	}
 }

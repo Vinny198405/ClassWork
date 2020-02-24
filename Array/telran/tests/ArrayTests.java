@@ -168,8 +168,17 @@ class ArrayTests {
 		// and even numbers be sorted in the descending order
 		array.sort(new OddEvenComparatorSort()); 
 		int actualNumbersEvenOddSort[] = getActualNumbers(array);
-		assertArrayEquals(actualNumbersEvenOddSort, expectedEvenOddSort);
+		assertArrayEquals(actualNumbersEvenOddSort, expectedEvenOddSort);		
 	
+	}
+	@Test
+	void testSortingEvenOddd() {
+		Array array = getArray(numbers1);
+		int expectedEvenOddSort[] = {15,25,35,45,55,50,40,30,20,10};
+		
+		array.sortingEvenOdd(new EvenNumbersPredicate());
+		int actualNumbersEvenOdd[] = getActualNumbers(array);
+		assertArrayEquals(actualNumbersEvenOdd, expectedEvenOddSort);
 	}
 		
 }
