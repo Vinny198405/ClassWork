@@ -44,6 +44,7 @@ public class IndexedLinkedList<T> implements IndexedList<T> {
 	private Node<T> head;
 	private Node<T> tail;
 	private int size;
+	private Array<T> array;
 
 	public IndexedLinkedList() {
 	}
@@ -58,12 +59,14 @@ public class IndexedLinkedList<T> implements IndexedList<T> {
 
 	@Override
 	public void add(T obj) {
+		array = null;
 		Node<T> newNode = new Node<>(obj);
 		addNodeTail(newNode);
 	}
 
 	@Override
 	public boolean add(int index, T obj) {
+		array = null;
 		boolean res = true;
 		Node<T> newNode = new Node<>(obj);
 
@@ -126,21 +129,25 @@ public class IndexedLinkedList<T> implements IndexedList<T> {
 
 	@Override
 	public int binarySearch(T pattern, Comparator<T> comp) {
-		int left = 0;
-		int right = size - 1;
-		int middle = (left + right) / 2;
-		T midVal = this.get(middle);
-		while (left <= right && !pattern.equals(midVal)) {
-			int cmp = comp.compare(midVal, pattern);
-			if (cmp < 0) {
-				left = middle + 1;
-			} else {
-				right = middle - 1;
-			}
-			middle = (left + right) / 2;
-			midVal = this.get(middle);
+		if (array == null) {
+			sort(comp);
 		}
-		return left > right ? -(left + 1) : middle;
+		return array.binarySearch(pattern, comp);
+//		int left = 0;
+//		int right = size - 1;
+//		int middle = (left + right) / 2;
+//		T midVal = this.get(middle);
+//		while (left <= right && !pattern.equals(midVal)) {
+//			int cmp = comp.compare(midVal, pattern);
+//			if (cmp < 0) {
+//				left = middle + 1;
+//			} else {
+//				right = middle - 1;
+//			}
+//			middle = (left + right) / 2;
+//			midVal = this.get(middle);
+//		}
+//		return left > right ? -(left + 1) : middle;
 	}
 
 	@Override
@@ -321,16 +328,16 @@ public class IndexedLinkedList<T> implements IndexedList<T> {
 	@Override
 	public void sort(Comparator<T> comp) {
 		Node<T> current = head;
-		Array<T> temp = new Array<T>(size);
+		array = new Array<T>(size);
 		for (int i = 0; i < size; i++) {
-			temp.add(current.obj);
+			array.add(current.obj);
 			current = current.next;
 		}
-		temp.sort(comp);
+		array.sort(comp);
 
 		current = head;
 		for (int i = 0; i < size; i++) {
-			current.obj = temp.get(i);
+			current.obj = array.get(i);
 			current = current.next;
 		}
 	}
