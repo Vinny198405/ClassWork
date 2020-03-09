@@ -1,5 +1,6 @@
 package telran.util;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.function.Predicate;
@@ -44,13 +45,12 @@ public class IndexedLinkedList<T> implements IndexedList<T> {
 	private Node<T> head;
 	private Node<T> tail;
 	private int size;
-	private Array<T> array;
+	//private Array<T> array;	
+	private T[] array;
 
-	public IndexedLinkedList() {
-	}
+	public IndexedLinkedList() {}
 
-	public IndexedLinkedList(int dummy) {
-	}
+	public IndexedLinkedList(int dummy) {}
 
 	@Override
 	public Iterator<T> iterator() {
@@ -132,7 +132,8 @@ public class IndexedLinkedList<T> implements IndexedList<T> {
 		if (array == null) {
 			sort(comp);
 		}
-		return array.binarySearch(pattern, comp);
+		//return array.binarySearch(pattern, comp);	
+		return Arrays.binarySearch(array, pattern, comp);
 //		int left = 0;
 //		int right = size - 1;
 //		int middle = (left + right) / 2;
@@ -325,19 +326,23 @@ public class IndexedLinkedList<T> implements IndexedList<T> {
 		sort((Comparator<T>) Comparator.naturalOrder());
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void sort(Comparator<T> comp) {
-		Node<T> current = head;
-		array = new Array<T>(size);
+		Node<T> current = head;		
+		//array = new Array<T>(size);
+		array = (T[]) new Object[size];
 		for (int i = 0; i < size; i++) {
-			array.add(current.obj);
+		//	array.add(current.obj);	
+			array [i] = current.obj;
 			current = current.next;
 		}
-		array.sort(comp);
-
+	//	array.sort(comp);
+		Arrays.sort(array, comp);
 		current = head;
 		for (int i = 0; i < size; i++) {
-			current.obj = array.get(i);
+			//current.obj = array.get(i);
+			current.obj = array[i];
 			current = current.next;
 		}
 	}
