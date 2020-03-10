@@ -132,23 +132,7 @@ public class IndexedLinkedList<T> implements IndexedList<T> {
 		if (array == null) {
 			sort(comp);
 		}
-		//return array.binarySearch(pattern, comp);	
 		return Arrays.binarySearch(array, pattern, comp);
-//		int left = 0;
-//		int right = size - 1;
-//		int middle = (left + right) / 2;
-//		T midVal = this.get(middle);
-//		while (left <= right && !pattern.equals(midVal)) {
-//			int cmp = comp.compare(midVal, pattern);
-//			if (cmp < 0) {
-//				left = middle + 1;
-//			} else {
-//				right = middle - 1;
-//			}
-//			middle = (left + right) / 2;
-//			midVal = this.get(middle);
-//		}
-//		return left > right ? -(left + 1) : middle;
 	}
 
 	@Override
@@ -235,6 +219,7 @@ public class IndexedLinkedList<T> implements IndexedList<T> {
 			removeNode(removedNode);
 
 		}
+		if (array != null) {addToArray();} // add list to array after remove
 		return res;
 	}
 
@@ -287,6 +272,7 @@ public class IndexedLinkedList<T> implements IndexedList<T> {
 			res = current.obj;
 			removeNode(current);
 		}
+		if (array != null) {addToArray();} // add list to array after remove
 		return res;
 	}
 
@@ -301,11 +287,13 @@ public class IndexedLinkedList<T> implements IndexedList<T> {
 				res = true;
 			}
 		}
+		if (array != null) {addToArray();} // add list to array after remove
 		return res;
 	}
 
 	@Override
 	public Object set(int ind, T newObj) {
+		array = null;
 		Node<T> temp = getNode(ind);
 		Object res = null;
 		if (isValidIndex(ind)) {
@@ -326,24 +314,25 @@ public class IndexedLinkedList<T> implements IndexedList<T> {
 		sort((Comparator<T>) Comparator.naturalOrder());
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void sort(Comparator<T> comp) {
-		Node<T> current = head;		
-		//array = new Array<T>(size);
-		array = (T[]) new Object[size];
-		for (int i = 0; i < size; i++) {
-		//	array.add(current.obj);	
-			array [i] = current.obj;
-			current = current.next;
-		}
-	//	array.sort(comp);
+	public void sort(Comparator<T> comp) {		
+		addToArray();
 		Arrays.sort(array, comp);
-		current = head;
+		Node<T> current = head;
 		for (int i = 0; i < size; i++) {
-			//current.obj = array.get(i);
 			current.obj = array[i];
 			current = current.next;
 		}
 	}
+	@SuppressWarnings("unchecked")
+	public void addToArray() {
+		array = (T[]) new Object[size];
+		Node<T> current = head;
+		for(int i = 0; i<size; i++) {
+			array[i] = current.obj;
+			current = current.next;			
+		}		
+		
+	}	
+			
 }
