@@ -81,8 +81,7 @@ public class HashSet<T> implements Set<T> {
 		while (itr.hasNext()) {
 			T obj = itr.next();
 			if (predicate.test(obj)) {
-				// itr.remove();
-				remove(obj);
+				 itr.remove();
 				res = true;
 			}
 		}
@@ -113,6 +112,11 @@ public class HashSet<T> implements Set<T> {
 		IndexedLinkedList<T> listt;
 		IndexedLinkedList.Node<T> res;
 		IndexedLinkedList.Node<T> current;
+        @Override
+		public void remove() {
+        	listt.removeNode(res);
+    		size--;
+		}
 
 		@Override
 		public boolean hasNext() {
