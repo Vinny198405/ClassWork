@@ -2,6 +2,9 @@ package telran.tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Arrays;
+import java.util.Iterator;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -58,4 +61,17 @@ void setUp() {
         assertFalse(set.contains(8));
         assertEquals(null, set.remove(-50));
     }
+	
+	@Test
+    void iterator() {
+		int expectedNumbers[] ={10, 20, 11, -8, 7, 13};
+		int[] actual = new int[set.size()];
+        int j = 0;
+        for (Iterator<Integer> itr = set.iterator(); itr.hasNext();) {
+            actual[j++] = itr.next();
+        }
+        Arrays.sort(actual);
+        Arrays.sort(expectedNumbers);
+        assertArrayEquals(actual, expectedNumbers);
+	}
 }
