@@ -19,7 +19,7 @@ public class HashSet<T> implements Set<T> {
 
 	@Override
 	public Iterator<T> iterator() {
-		return new HashSetIterator();
+		return new HashSetIterator2();
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class HashSet<T> implements Set<T> {
 		while (itr.hasNext()) {
 			T obj = itr.next();
 			if (predicate.test(obj)) {
-				 itr.remove();
+				itr.remove();
 				res = true;
 			}
 		}
@@ -105,47 +105,38 @@ public class HashSet<T> implements Set<T> {
 		return index;
 	}
 
-	private class HashSetIterator implements Iterator<T> {
+	private class HashSetIterator2 implements Iterator<T> {
+		IndexedList<T> list;		
 		int curInd = 0;
-		int curListInd = 0;
 		int curTableInd = 0;
-		IndexedLinkedList<T> listt;
-		IndexedLinkedList.Node<T> res;
-		IndexedLinkedList.Node<T> current;
-        @Override
-		public void remove() {
-        	listt.removeNode(res);
-    		size--;
-		}
-
+		Iterator<T> iterator;
 		@Override
 		public boolean hasNext() {
 			return curTableInd < size - 1;
 		}
 
 		@Override
-		public T next() {
-			for (int i = curInd; i < hashTable.length; i++) {
-				listt = (IndexedLinkedList<T>) hashTable[i];
-				if (listt != null) {
-					if (current == null) {
-						current = listt.getHead();
-					}
-					if (curListInd < listt.size()) {
+		public T next() {			
+				for (int i = curInd; i < hashTable.length; i++) {
+				list = hashTable[i];
+				if (list != null) {
+					if (iterator == null) {iterator = list.iterator();}
+					if (iterator.hasNext()) {
 						curInd = i;
-						res = current;
-						current = current.next;
-						curListInd++;
-						return res.obj;
+						return iterator.next();
 					} else {
-						current = null;
+						curInd++;
 						curTableInd++;
+						iterator = null;
 					}
-				}
-				curListInd = 0;
+				}				
 			}
-			return null;
+		return null;
+		}
+		@Override
+		public void remove() {
+			iterator.remove();
+			size--;
 		}
 	}
-
 }
