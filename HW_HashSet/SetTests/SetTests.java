@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Random;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -52,6 +53,9 @@ void setUp() {
 	        assertTrue(res.contains(20));
 	        assertTrue(res.contains(-8));
 	        assertFalse(res.contains(11));
+	        for (Integer value : res) {
+				assertTrue(set.contains(value));
+			}
     }
 	@Test
     void remove() {
@@ -64,7 +68,11 @@ void setUp() {
 	
 	@Test
     void iterator() {
-		int expectedNumbers[] ={10, 20, 11, -8, 7, 13};
+		int expectedNumbers[] = RandomArray(0, 10000, 50);
+		set = new HashSet<Integer>();
+		for (Integer num: expectedNumbers) {
+			set.add(num);
+		}
 		int[] actual = new int[set.size()];
         int j = 0;
         for (Iterator<Integer> itr = set.iterator(); itr.hasNext();) {
@@ -74,4 +82,23 @@ void setUp() {
         Arrays.sort(expectedNumbers);
         assertArrayEquals(actual, expectedNumbers);
 	}
+	
+	public static int[] RandomArray(int start, int end, int count) {
+	    Random rng = new Random();
+
+	    int[] result = new int[count];
+	    int cur = 0;
+	    int remaining = end - start;
+	    for (int i = start; i < end && count > 0; i++) {
+	        double probability = rng.nextDouble();
+	        if (probability < ((double) count) / (double) remaining) {
+	            count--;
+	            result[cur++] = i;
+	        }
+	        remaining--;
+	    }
+	    return result;
+	}
+	
+	
 }

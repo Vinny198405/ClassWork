@@ -19,7 +19,7 @@ public class HashSet<T> implements Set<T> {
 
 	@Override
 	public Iterator<T> iterator() {
-		return new HashSetIterator2();
+		return new HashSetIterator();
 	}
 
 	@Override
@@ -105,14 +105,14 @@ public class HashSet<T> implements Set<T> {
 		return index;
 	}
 
-	private class HashSetIterator2 implements Iterator<T> {
+	private class HashSetIterator implements Iterator<T> {
 		IndexedList<T> list;		
 		int curInd = 0;
 		int curTableInd = 0;
 		Iterator<T> iterator;
 		@Override
 		public boolean hasNext() {
-			return curTableInd < size - 1;
+			return curTableInd < size;
 		}
 
 		@Override
@@ -123,10 +123,10 @@ public class HashSet<T> implements Set<T> {
 					if (iterator == null) {iterator = list.iterator();}
 					if (iterator.hasNext()) {
 						curInd = i;
+						curTableInd++;
 						return iterator.next();
 					} else {
-						curInd++;
-						curTableInd++;
+						curInd++;						
 						iterator = null;
 					}
 				}				
@@ -138,5 +138,5 @@ public class HashSet<T> implements Set<T> {
 			iterator.remove();
 			size--;
 		}
-	}
+	}	
 }
