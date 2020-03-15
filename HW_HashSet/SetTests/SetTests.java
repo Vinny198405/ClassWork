@@ -42,6 +42,7 @@ void setUp() {
         assertTrue(set.contains(7));
         assertTrue(set.contains(13));
         assertFalse(set.contains(-8));
+        
     }
 	@Test
 	void filter() {
@@ -49,9 +50,6 @@ void setUp() {
 	        EvenNumbersPredicate predicateEven = new EvenNumbersPredicate();
 	        HashSet<Integer> res = (HashSet<Integer>) set.filter(predicateEven);
 	        assertEquals(3, res.size());
-	        assertTrue(res.contains(10));
-	        assertTrue(res.contains(20));
-	        assertTrue(res.contains(-8));
 	        assertFalse(res.contains(11));
 	        for (Integer value : res) {
 				assertTrue(set.contains(value));
@@ -68,7 +66,7 @@ void setUp() {
 	
 	@Test
     void iterator() {
-		int expectedNumbers[] = RandomArray(0, 10000, 50);
+		int expectedNumbers[] = RandomArray(0, 10000, 1000);
 		set = new HashSet<Integer>();
 		for (Integer num: expectedNumbers) {
 			set.add(num);
@@ -79,10 +77,16 @@ void setUp() {
             actual[j++] = itr.next();
         }
         Arrays.sort(actual);
-        Arrays.sort(expectedNumbers);
         assertArrayEquals(actual, expectedNumbers);
 	}
 	
+/**
+ * function to create a randomized sorted array without repeating numbers
+ * @param start - minimal number
+ * @param end - maximum number
+ * @param count - numbers in the array
+ * @return the function return sorted random array
+ */
 	public static int[] RandomArray(int start, int end, int count) {
 	    Random rng = new Random();
 
@@ -98,7 +102,5 @@ void setUp() {
 	        remaining--;
 	    }
 	    return result;
-	}
-	
-	
+	}	
 }

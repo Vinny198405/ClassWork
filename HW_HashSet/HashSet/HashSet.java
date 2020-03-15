@@ -37,7 +37,7 @@ public class HashSet<T> implements Set<T> {
 		hashTable[index].add(obj);
 		return true;
 	}
-
+	
 	private void recreateHashTable() {
 		HashSet<T> tmp = new HashSet<>(hashTable.length * 2);
 		for (IndexedList<T> list : hashTable) {
@@ -117,21 +117,15 @@ public class HashSet<T> implements Set<T> {
 
 		@Override
 		public T next() {			
-				for (int i = curInd; i < hashTable.length; i++) {
-				list = hashTable[i];
+			while (curInd < hashTable.length && (iterator == null || !iterator.hasNext())) {
+				list = hashTable[curInd];
 				if (list != null) {
-					if (iterator == null) {iterator = list.iterator();}
-					if (iterator.hasNext()) {
-						curInd = i;
-						curTableInd++;
-						return iterator.next();
-					} else {
-						curInd++;						
-						iterator = null;
-					}
-				}				
+					iterator = list.iterator();					
+				}		
+				curInd++;
 			}
-		return null;
+			curTableInd++;
+			return iterator == null ? null : iterator.next();
 		}
 		@Override
 		public void remove() {
