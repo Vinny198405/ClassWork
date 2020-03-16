@@ -42,8 +42,17 @@ void setUp() {
         assertTrue(set.contains(7));
         assertTrue(set.contains(13));
         assertFalse(set.contains(-8));
-        
+        Integer numbers[] = {10, 20, 30, 40, 50, 60};
+        setAdd(numbers);
+        assertTrue(set.removeIf(predicateEven));
+        assertEquals(0, set.size());        
     }
+	void setAdd(Integer[] numbers) {
+		set = new HashSet<Integer>();
+		for (Integer num: numbers) {
+			set.add(num);
+		}
+	}
 	@Test
 	void filter() {
 	        //{10, 20, -8};

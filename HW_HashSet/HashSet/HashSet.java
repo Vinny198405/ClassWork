@@ -131,6 +131,7 @@ public class HashSet<T> implements Set<T> {
 		public void remove() {
 			iterator.remove();
 			size--;
+			curTableInd--;
 		}
 	}	
 }
