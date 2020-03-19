@@ -11,12 +11,11 @@ public class SetMethods {
      * with no repetitions
      */
     public static int[] union(int ar1[], int ar2[]) {
-        //T O D O
-        HashSet<Integer> setInt = getIntegers(ar1);
+        HashSet<Integer> setInt = getFirst(ar1);
         for (int j = 0; j < ar2.length; j++) {
             setInt.add(ar2[j]);
         }
-        int[] res = getInts(setInt);
+        int[] res = getRes(setInt);
         return res;
     }
 
@@ -30,7 +29,7 @@ public class SetMethods {
      * with no repetitions
      */
     public static int[] intersection(int ar1[], int ar2[]) {
-        HashSet<Integer> setFirst = getIntegers(ar1);
+        HashSet<Integer> setFirst = getFirst(ar1);
 
         HashSet<Integer> setRes = new HashSet<>();
         for (int j = 0; j < ar2.length; j++) {
@@ -38,7 +37,7 @@ public class SetMethods {
             if (setFirst.contains(num)) setRes.add(num);
         }
 
-        int[] res = getInts(setRes);
+        int[] res = getRes(setRes);
 
         return res;
     }
@@ -54,7 +53,7 @@ public class SetMethods {
      * in the second
      */
     public static int[] difference(int ar1[], int ar2[]) {
-        HashSet<Integer> setFirst = getIntegers(ar2);
+        HashSet<Integer> setFirst = getFirst(ar2);
 
         HashSet<Integer> setRes = new HashSet<>();
         for (int i = 0; i < ar1.length; i++) {
@@ -62,12 +61,12 @@ public class SetMethods {
             if (!setFirst.contains(num)) setRes.add(num);
         }
 
-        int[] res = getInts(setRes);
+        int[] res = getRes(setRes);
 
         return res;
     }
 
-    private static int[] getInts(HashSet<Integer> setRes) {
+    private static int[] getRes(HashSet<Integer> setRes) {
         int[] res = new int[setRes.size()];
         int i = 0;
         for (int num : setRes) {
@@ -76,7 +75,7 @@ public class SetMethods {
         return res;
     }
 
-    private static HashSet<Integer> getIntegers(int[] ar1) {
+    private static HashSet<Integer> getFirst(int[] ar1) {
         HashSet<Integer> setFirst = new HashSet<>();
         for (int i = 0; i < ar1.length; i++) {
             setFirst.add(ar1[i]);
