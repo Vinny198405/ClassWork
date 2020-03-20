@@ -11,12 +11,12 @@ public class SetMethods {
      * with no repetitions
      */
     public static int[] union(int ar1[], int ar2[]) {
-        HashSet<Integer> setInt = getFirst(ar1);
+        HashSet<Integer> setFirst = getFirst(ar1);
         for (int j = 0; j < ar2.length; j++) {
-            setInt.add(ar2[j]);
+            setFirst.add(ar2[j]);
         }
-        int[] res = getRes(setInt);
-        return res;
+
+        return getRes(setFirst);
     }
 
     /**
@@ -37,9 +37,7 @@ public class SetMethods {
             if (setFirst.contains(num)) setRes.add(num);
         }
 
-        int[] res = getRes(setRes);
-
-        return res;
+        return getRes(setRes);
     }
 
 
@@ -61,9 +59,7 @@ public class SetMethods {
             if (!setFirst.contains(num)) setRes.add(num);
         }
 
-        int[] res = getRes(setRes);
-
-        return res;
+        return getRes(setRes);
     }
 
     private static int[] getRes(HashSet<Integer> setRes) {
