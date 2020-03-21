@@ -127,6 +127,7 @@ public class TreeSet<T> implements Set<T> {
 	}
 
 	private void removeNonJunctionNode(Node<T> node) {
+		// remove root
 		if (node.left == null && node.right == null && node.parent == null) {
 			root = null;
 		}
@@ -137,8 +138,8 @@ public class TreeSet<T> implements Set<T> {
 			else
 				node.parent.right = null;
 		}
-		// Removing a node that has a left subtree but does not have a right subtree
-		if (node.left != null && node.right == null) {
+		// Removing a node that has a left subtree
+		if (node.left != null) {
 			// Change parent
 			node.left.parent = node.parent;
 			if (node == root) {
@@ -149,8 +150,8 @@ public class TreeSet<T> implements Set<T> {
 				node.parent.right = node.left;
 			}
 		}
-		// Removing a node that has a right subtree but does not have a left subtree
-		if (node.left == null && node.right != null) {
+		// Removing a node that has a right subtree
+		if (node.right != null) {
 			// Change parent
 			node.right.parent = node.parent;
 			if (node == root) {
