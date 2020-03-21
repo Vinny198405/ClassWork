@@ -81,12 +81,12 @@ public class TreeSet<T> implements Set<T> {
 	@Override
 	public Set<T> filter(Predicate<T> predicate) {
 		TreeSet<T> res = new TreeSet<T>();
-		for(T obj: this) {
-		if (predicate.test(obj)) {
-			res.add(obj);
+		for (T obj : this) {
+			if (predicate.test(obj)) {
+				res.add(obj);
+			}
 		}
-	}
-	return res;
+		return res;
 	}
 
 	@Override
@@ -98,66 +98,70 @@ public class TreeSet<T> implements Set<T> {
 			removeNode(node);
 		}
 		return res;
-	}	
+	}
 
 	@SuppressWarnings("unchecked")
-	private Node<T> findNode(Object pattern) {
+	public Node<T> findNode(Object pattern) {
 		Node<T> current = root;
-        while (current.obj != pattern) {
-            if (comparator.compare(current.obj, (T) pattern) > 0) {
-                current = current.left;
-            } else {
-                current = current.right;
-            }
-            if (current == null) {
-                return null;
-            }
-        }
-        return current;
+		while (comparator.compare(current.obj, (T) pattern) != 0) {
+
+			if (comparator.compare(current.obj, (T) pattern) > 0)
+				current = current.left;
+			else
+				current = current.right;
+
+			if (current == null)
+				return null;
+		}
+		return current;
 	}
 
 	private void removeNode(Node<T> node) {
-        if (isJunction(node)) {
-            Node<T> substitute = getLeastNode(node.right);
-            node.obj = substitute.obj;
-            node = substitute;
-        }
-        removeNonJunctionNode(node);
-        size--;
+		if (isJunction(node)) {
+			Node<T> substitute = getLeastNode(node.right);
+			node.obj = substitute.obj;
+			node = substitute;
+		}
+		removeNonJunctionNode(node);
+		size--;
 	}
 
 	private void removeNonJunctionNode(Node<T> node) {
 		if (node.left == null && node.right == null && node.parent == null) {
-            root = null;
-        }
-        //remove tree leaf
-        if (node.left == null && node.right == null && node.parent != null) {
-            if (node == node.parent.left) node.parent.left = null;
-            else node.parent.right = null;
-        }
-        //Removing a node that has a left subtree but does not have a right subtree
-        if (node.left != null && node.right == null) {
-            //Change parent
-            node.left.parent = node.parent;
-            if (node == node.parent.left) {
-                node.parent.left = node.left;
-            } else if (node == node.parent.right) {
-                node.parent.right = node.left;
-            }
-        }
-        //Removing a node that has a right subtree but does not have a left subtree
-        if (node.left == null && node.right != null) {
-            //Change parent
-            node.right.parent = node.parent;
-            if (node == root) {
-                root = node.right;                
-            }else if (node == node.parent.left) {
-                node.parent.left = node.right;
-            } else if (node == node.parent.right) {
-                node.parent.right = node.right;
-            }
-        }
-    }
+			root = null;
+		}
+		// remove tree leaf
+		if (node.left == null && node.right == null && node.parent != null) {
+			if (node == node.parent.left)
+				node.parent.left = null;
+			else
+				node.parent.right = null;
+		}
+		// Removing a node that has a left subtree but does not have a right subtree
+		if (node.left != null && node.right == null) {
+			// Change parent
+			node.left.parent = node.parent;
+			if (node == root) {
+				root = node.left;
+			} else if (node == node.parent.left) {
+				node.parent.left = node.left;
+			} else if (node == node.parent.right) {
+				node.parent.right = node.left;
+			}
+		}
+		// Removing a node that has a right subtree but does not have a left subtree
+		if (node.left == null && node.right != null) {
+			// Change parent
+			node.right.parent = node.parent;
+			if (node == root) {
+				root = node.right;
+			} else if (node == node.parent.left) {
+				node.parent.left = node.right;
+			} else if (node == node.parent.right) {
+				node.parent.right = node.right;
+			}
+		}
+	}
 
 	private boolean isJunction(Node<T> node) {
 		return node.left != null && node.right != null;
@@ -181,14 +185,14 @@ public class TreeSet<T> implements Set<T> {
 	@Override
 	public boolean removeIf(Predicate<T> predicate) {
 		Iterator<T> itr = iterator();
-        int initSize = size;
-        while (itr.hasNext()) {
-            T obj = itr.next();
-            if (predicate.test(obj)) {
-                itr.remove();
-            }
-        }
-        return initSize > size;
+		int initSize = size;
+		while (itr.hasNext()) {
+			T obj = itr.next();
+			if (predicate.test(obj)) {
+				itr.remove();
+			}
+		}
+		return initSize > size;
 	}
 
 	@Override
@@ -203,27 +207,25 @@ public class TreeSet<T> implements Set<T> {
 
 	private class TreeSetIterator implements Iterator<T> {
 		Node<T> current = getLeastNode(root);
-        Node<T> remove;
+		Node<T> remove;
 
-        @Override
-        public boolean hasNext() {
-            return current != null;
-        }
+		@Override
+		public boolean hasNext() {
+			return current != null;
+		}
 
-        @Override
-        public T next() {
-            remove = current;
-            T res = current.obj;
-            current = current.right != null ?
-                    getLeastNode(current.right) :
-                    getParentFromLeft(current);
+		@Override
+		public T next() {
+			remove = current;
+			T res = current.obj;
+			current = current.right != null ? getLeastNode(current.right) : getParentFromLeft(current);
 
-            return res;
-        }
+			return res;
+		}
 
-        @Override
-        public void remove() {
-            removeNode(remove);
-        }
-    }
+		@Override
+		public void remove() {
+			removeNode(remove);
+		}
+	}
 }
