@@ -19,6 +19,7 @@ public class TreeSet<T> implements Set<T> {
 	Comparator<T> comparator;
 	Node<T> root;
 	int size;
+	Node<T> remCurNode;
 
 	public TreeSet(Comparator<T> comparator) {
 		this.comparator = comparator;
@@ -120,6 +121,7 @@ public class TreeSet<T> implements Set<T> {
 		if (isJunction(node)) {
 			Node<T> substitute = getLeastNode(node.right);
 			node.obj = substitute.obj;
+			remCurNode = node;
 			node = substitute;
 		}
 		removeNonJunctionNode(node);
@@ -138,28 +140,28 @@ public class TreeSet<T> implements Set<T> {
 			else
 				node.parent.right = null;
 		}
-		  //Removing a node that has a left subtree
-        if (node.left != null) {
-            //Change parent
-            changeParent(node, node.left);
-        }
-        //Removing a node that has a right subtree
-        if (node.right != null) {
-            //Change parent
-            changeParent(node, node.right);
-        }
-    }
+		// Removing a node that has a left subtree
+		if (node.left != null) {
+			// Change parent
+			changeParent(node, node.left);
+		}
+		// Removing a node that has a right subtree
+		if (node.right != null) {
+			// Change parent
+			changeParent(node, node.right);
+		}
+	}
 
-    private void changeParent(Node<T> node, Node<T> changNode) {
-        changNode.parent = node.parent;
-        if (node == root) {
-            root = changNode;
-        } else if (node == node.parent.left) {
-            node.parent.left = changNode;
-        } else if (node == node.parent.right) {
-            node.parent.right = changNode;
-        }
-    }
+	private void changeParent(Node<T> node, Node<T> changNode) {
+		changNode.parent = node.parent;
+		if (node == root) {
+			root = changNode;
+		} else if (node == node.parent.left) {
+			node.parent.left = changNode;
+		} else if (node == node.parent.right) {
+			node.parent.right = changNode;
+		}
+	}
 
 	private boolean isJunction(Node<T> node) {
 		return node.left != null && node.right != null;
@@ -224,6 +226,10 @@ public class TreeSet<T> implements Set<T> {
 		@Override
 		public void remove() {
 			removeNode(remove);
+			if (hasNext() && remCurNode != null) {
+				current = remCurNode;
+			}
+			remCurNode = null;
 		}
 	}
 }
