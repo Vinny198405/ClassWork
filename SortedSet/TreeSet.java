@@ -228,21 +228,17 @@ public class TreeSet<T> implements SortedSet<T> {
 		Node<T> current = getFrom(from);
 		SortedSet<T> res = new TreeSet<T>();
 		int compRes;
-		if (current.obj != from & (compRes = comparator.compare((T) from, current.obj)) < 0) {
+		compRes = comparator.compare(current.obj, from);
+		if (!isIncludedFrom && compRes == 0)
+			current = getCurrent(current);
+		else if (compRes < 0)
+			current = getCurrent(current);
+		while (current != null) {
+			compRes = comparator.compare(current.obj, to);
+			if ((!isIncludedTo && compRes == 0) || compRes > 0)
+				return res;
 			res.add(current.obj);
 			current = getCurrent(current);
-		} else if (compRes != 0)
-			current = getCurrent(current);
-		while (current != null && (compRes = comparator.compare((T) to, current.obj)) >= 1) {
-			if (isIncludedFrom && compRes > 0)
-				res.add(current.obj);
-			current = getCurrent(current);
-			if (current != null)
-				compRes = comparator.compare((T) to, current.obj);
-			if (compRes > 0 && !isIncludedFrom)
-				res.add(current.obj);
-			else if (compRes >= 0 && isIncludedTo)
-				res.add(current.obj);
 		}
 		return res;
 	}
